@@ -119,5 +119,78 @@ namespace WebAdvert.Web.Controllers
             return View("Login", model);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> forgotPassword(forgorPasswordModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("forgotPassword")]
+        public async Task<IActionResult> forgotPassword_post(forgorPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await (_pool as CognitoUserPool).FindByIdAsync(model.Email).ConfigureAwait(false);
+
+                if (user.Status != null)
+                {
+                    await user.ForgotPasswordAsync();
+                    return RedirectToAction("resetPassword");
+                }
+                else
+                {
+                    ModelState.AddModelError("Email", "Email does not exist");
+                }
+
+            }
+            return View("Login", model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> resetPassword(resetPasswordModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("resetPassword")]
+        public async Task<IActionResult> resetPassword_post(resetPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await (_pool as CognitoUserPool).FindByIdAsync(model.Email).ConfigureAwait(false);
+
+                if (user.Status != null)
+                {
+                    try
+                    {
+                        await user.ConfirmForgotPasswordAsync(model.Code, model.Password).ConfigureAwait(false);
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                    catch (Exception ex )
+                    {
+
+                        ModelState.AddModelError("Error", ex.Message);
+                    }                
+                }
+                else
+                {
+                    ModelState.AddModelError("Email", "Email does not exist");
+                }
+
+            }
+            return View("resetPassword", model);
+        }
+
+        public async Task<IActionResult> Signout()
+        {
+            if (User.Identity.IsAuthenticated) await _signInManager.SignOutAsync().ConfigureAwait(false);
+            return RedirectToAction("Login");
+        }
+
     }
 }

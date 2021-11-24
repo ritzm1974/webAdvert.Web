@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Ritz Monterrey</Authors>
+    <Company>None</Company>
+    <Product>Web Advert Microservice</Product>
+    <PackageProjectUrl>https://github.com/ritzm1974/WebAdvert.AdvertApi</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ritzm1974/WebAdvert.AdvertApi</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>AdvertApi.Models.Ritz.Monterrey</PackageId>
+  </PropertyGroup>
+
+</Project>
